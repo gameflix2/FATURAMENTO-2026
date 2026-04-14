@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --neon:#00f5ff;--neon2:#bf00ff;--neon3:#00ff88;--neon4:#ff6b35;--neon5:#ff3b3b;
+  --glass:rgba(255,255,255,0.05);--glass2:rgba(255,255,255,0.08);
+  --border-glass:rgba(255,255,255,0.12);--border-neon:rgba(0,245,255,0.4);
+  --bg:#050510;--text:#e8eeff;--text2:#8892b0;--text3:#ccd6f6
+}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;
+  background-image:radial-gradient(ellipse at 20% 50%,rgba(0,245,255,0.06) 0%,transparent 60%),
+  radial-gradient(ellipse at 80% 20%,rgba(191,0,255,0.06) 0%,transparent 60%),
+  radial-gradient(ellipse at 50% 80%,rgba(0,255,136,0.04) 0%,transparent 60%)}
+.particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden}
+.particle{position:absolute;width:2px;height:2px;border-radius:50%;animation:float linear infinite}
+@keyframes float{0%{transform:translateY(100vh) translateX(0);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-10vh) translateX(calc(var(--dx)*100px));opacity:0}}
+
+/* HEADER */
+header{position:relative;z-index:10;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  background:var(--glass);backdrop-filter:blur(20px);border-bottom:1px solid var(--border-glass);
+  box-shadow:0 0 40px rgba(0,245,255,0.08),0 2px 0 var(--border-neon)}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,rgba(0,245,255,0.2),rgba(191,0,255,0.2));
+  border:1px solid var(--border-neon);display:flex;align-items:center;justify-content:center;font-size:18px;
+  box-shadow:0 0 20px rgba(0,245,255,0.3)}
+.logo-text{font-size:20px;font-weight:700;letter-spacing:2px;background:linear-gradient(90deg,var(--neon),var(--neon2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.logo-sub{font-size:10px;color:var(--text2);letter-spacing:1px}
+.header-right{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.kpi-pill{display:flex;align-items:center;gap:10px;padding:8px 18px;border-radius:20px;font-size:12px;font-weight:700;letter-spacing:1px}
+.kpi-fat{background:rgba(0,245,255,0.1);border:1px solid rgba(0,245,255,0.3);color:var(--neon);box-shadow:0 0 16px rgba(0,245,255,0.12)}
+.kpi-desp{background:rgba(255,59,59,0.1);border:1px solid rgba(255,59,59,0.3);color:var(--neon5);box-shadow:0 0 16px rgba(255,59,59,0.1)}
+.kpi-lucro{background:rgba(0,255,136,0.15);border:1px solid rgba(0,255,136,0.4);color:var(--neon3);box-shadow:0 0 16px rgba(0,255,136,0.2)}
+.kpi-val{font-size:18px;font-weight:800}
+.btn{padding:9px 18px;border-radius:10px;border:none;cursor:pointer;font-size:13px;font-weight:600;letter-spacing:0.5px;transition:all 0.25s;display:flex;align-items:center;gap:7px;white-space:nowrap}
+.btn-primary{background:linear-gradient(135deg,rgba(0,245,255,0.2),rgba(0,245,255,0.05));border:1px solid rgba(0,245,255,0.5);color:var(--neon);box-shadow:0 0 15px rgba(0,245,255,0.12)}
+.btn-primary:hover{box-shadow:0 0 30px rgba(0,245,255,0.3);transform:translateY(-1px)}
+
+/* TABS */
+.tabs-bar{position:relative;z-index:9;display:flex;gap:4px;padding:14px 24px 0;background:rgba(5,5,16,0.5);backdrop-filter:blur(10px);border-bottom:1px solid var(--border-glass)}
+.tab{padding:10px 24px;border-radius:12px 12px 0 0;border:1px solid transparent;border-bottom:none;cursor:pointer;font-size:13px;font-weight:700;letter-spacing:1px;transition:all 0.25s;color:var(--text2);background:none}
+.tab:hover{color:var(--text3)}
+.tab.fat.active{background:rgba(0,245,255,0.1);border-color:rgba(0,245,255,0.3);color:var(--neon);box-shadow:0 0 20px rgba(0,245,255,0.1)}
+.tab.desp.active{background:rgba(255,59,59,0.1);border-color:rgba(255,59,59,0.3);color:var(--neon5);box-shadow:0 0 20px rgba(255,59,59,0.1)}
+.tab.lucro.active{background:rgba(0,255,136,0.1);border-color:rgba(0,255,136,0.3);color:var(--neon3);box-shadow:0 0 20px rgba(0,255,136,0.1)}
+.tab-dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:6px}
+.tab.fat .tab-dot{background:var(--neon)}
+.tab.desp .tab-dot{background:var(--neon5)}
+.tab.lucro .tab-dot{background:var(--neon3)}
+
+/* MAIN */
+.main{position:relative;z-index:5;padding:20px 20px;max-width:100%}
+.tab-panel{display:none}.tab-panel.active{display:block}
+
+/* BOARDS */
+.boards-wrap{display:flex;gap:14px;align-items:flex-start;overflow-x:auto;padding-bottom:16px}
+.board{flex:0 0 auto;width:230px;background:var(--glass);backdrop-filter:blur(20px);border:1px solid var(--border-glass);border-radius:18px;overflow:hidden;transition:all 0.3s}
+.board:hover{box-shadow:0 0 28px var(--board-glow,rgba(0,245,255,0.08));border-color:var(--board-border,rgba(0,245,255,0.2))}
+.board-header{padding:12px 14px;background:var(--board-bg,rgba(0,245,255,0.1));border-bottom:1px solid var(--board-border-color,rgba(0,245,255,0.2));display:flex;align-items:center;justify-content:space-between;gap:6px}
+.board-name{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--board-color,var(--neon));flex:1;cursor:pointer;background:none;border:none;text-align:left;font-family:inherit}
+.board-name-input{font-size:12px;font-weight:800;letter-spacing:1px;color:var(--board-color,var(--neon));flex:1;background:rgba(0,0,0,0.3);border:1px solid var(--board-border-color,rgba(0,245,255,0.3));border-radius:5px;padding:2px 6px;font-family:inherit;outline:none;width:100%}
+.board-total{font-size:14px;font-weight:800;color:var(--board-color,var(--neon));text-shadow:0 0 10px var(--board-glow,rgba(0,245,255,0.4))}
+.board-subtotal{padding:7px 14px;background:rgba(0,0,0,0.2);border-bottom:1px solid var(--border-glass);font-size:10px;color:var(--text2);letter-spacing:1px;display:flex;justify-content:space-between;align-items:center}
+.board-subtotal span{font-weight:700;color:var(--text3);font-size:12px}
+.entries{padding:8px;display:flex;flex-direction:column;gap:5px;min-height:50px}
+.entry{display:flex;gap:6px;align-items:center;background:var(--glass);border:1px solid var(--border-glass);border-radius:9px;padding:7px 9px;transition:all 0.2s}
+.entry:hover{background:var(--glass2)}
+.entry-label{flex:1;font-size:12px;color:var(--text3);cursor:pointer;min-width:0;word-break:break-word}
+.entry-val{font-size:12px;font-weight:700;white-space:nowrap}
+.fat-val{color:var(--neon3)}
+.desp-val{color:var(--neon5)}
+.entry-del{background:none;border:none;color:rgba(255,70,70,0.35);cursor:pointer;font-size:13px;transition:all 0.2s;padding:0 2px;line-height:1;flex-shrink:0}
+.entry-del:hover{color:#ff4646}
+.add-entry{margin:0 8px 8px;display:flex;gap:5px}
+.add-input{flex:1;padding:7px 9px;background:rgba(255,255,255,0.03);border:1px dashed rgba(255,255,255,0.1);border-radius:9px;color:var(--text);font-size:11px;outline:none;transition:all 0.3s;font-family:inherit}
+.add-input:focus{border-color:var(--border-neon)}
+.add-input::placeholder{color:var(--text2)}
+.add-val-input{width:65px;padding:7px 7px;background:rgba(255,255,255,0.03);border:1px dashed rgba(255,255,255,0.1);border-radius:9px;color:var(--neon3);font-size:11px;outline:none;transition:all 0.3s;font-family:inherit;text-align:right}
+.add-btn{padding:7px 9px;border-radius:9px;border:none;cursor:pointer;background:rgba(0,245,255,0.1);border:1px solid rgba(0,245,255,0.2);color:var(--neon);font-size:15px;transition:all 0.2s;font-weight:700}
+.add-btn:hover{background:rgba(0,245,255,0.2)}
+.add-neg-wrap{flex:0 0 auto;display:flex;align-items:flex-start;padding-top:8px}
+.add-neg-btn{width:160px;height:120px;border-radius:16px;border:1px dashed rgba(0,245,255,0.2);background:none;color:var(--text2);cursor:pointer;font-size:13px;transition:all 0.2s;font-family:inherit}
+.add-neg-btn:hover{border-color:var(--neon);color:var(--neon);background:rgba(0,245,255,0.04)}
+
+/* LUCRO PANEL */
+.lucro-hero{
+  background:linear-gradient(135deg,rgba(0,255,136,0.08),rgba(0,255,136,0.02));
+  border:1px solid rgba(0,255,136,0.25);border-radius:20px;padding:28px 32px;margin-bottom:24px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;
+  box-shadow:0 0 40px rgba(0,255,136,0.08)
+}
+.lucro-hero-label{font-size:13px;font-weight:700;letter-spacing:2px;color:var(--text2);text-transform:uppercase;margin-bottom:6px}
+.lucro-hero-val{font-size:48px;font-weight:900;background:linear-gradient(90deg,var(--neon3),var(--neon));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.lucro-hero-sub{font-size:12px;color:var(--text2);margin-top:6px}
+.lucro-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.lucro-card{background:var(--glass);backdrop-filter:blur(20px);border:1px solid var(--border-glass);border-radius:16px;overflow:hidden;transition:all 0.3s}
+.lucro-card:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,0.3)}
+.lucro-card-header{padding:12px 16px;border-bottom:1px solid var(--border-glass);display:flex;justify-content:space-between;align-items:center}
+.lucro-card-name{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+.lucro-card-body{padding:14px 16px}
+.lucro-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;font-size:12px}
+.lucro-row-label{color:var(--text2)}
+.lucro-row-val{font-weight:700}
+.lucro-divider{height:1px;background:rgba(255,255,255,0.06);margin:10px 0}
+.lucro-result{display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:800;margin-top:4px}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(5,5,16,0.85);backdrop-filter:blur(10px);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:all 0.3s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:linear-gradient(135deg,rgba(13,13,43,0.98),rgba(10,10,30,0.98));border:1px solid var(--border-glass);border-radius:22px;padding:28px;width:90%;max-width:400px;
+  box-shadow:0 0 60px rgba(0,245,255,0.1);transform:scale(0.95) translateY(20px);transition:all 0.3s}
+.modal-overlay.open .modal{transform:scale(1) translateY(0)}
+.modal-title{font-size:17px;font-weight:700;margin-bottom:18px;background:linear-gradient(90deg,var(--neon),var(--neon2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.form-label{display:block;font-size:10px;color:var(--neon);font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px}
+.form-input{width:100%;padding:10px 13px;margin-bottom:13px;background:rgba(255,255,255,0.04);border:1px solid var(--border-glass);border-radius:10px;color:var(--text);font-size:13px;outline:none;transition:all 0.3s;font-family:inherit}
+.form-input:focus{border-color:var(--border-neon)}
+.form-input::placeholder{color:var(--text2)}
+.color-picks{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+.cpick{width:28px;height:28px;border-radius:7px;cursor:pointer;border:2px solid transparent;transition:all 0.2s}
+.cpick:hover,.cpick.sel{border-color:white;transform:scale(1.15)}
+.modal-actions{display:flex;gap:9px;margin-top:6px}
+.btn-suc{background:linear-gradient(135deg,rgba(0,255,136,0.2),rgba(0,255,136,0.05));border:1px solid rgba(0,255,136,0.5);color:var(--neon3)}
+.btn-suc:hover{box-shadow:0 0 25px rgba(0,255,136,0.25)}
+.btn-cancel{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--text2)}
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(0,245,255,0.2);border-radius:3px}
+</style>
+
+<div class="particles" id="particles"></div>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">💹</div>
+    <div>
+      <div class="logo-text">FINANCEIRO 2026</div>
+      <div class="logo-sub">FATURAMENTO · DESPESAS · LUCRO</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="kpi-pill kpi-fat"><span>FATURAMENTO</span><span class="kpi-val" id="kpi-fat">R$ 0</span></div>
+    <div class="kpi-pill kpi-desp"><span>DESPESAS</span><span class="kpi-val" id="kpi-desp">R$ 0</span></div>
+    <div class="kpi-pill kpi-lucro"><span>LUCRO</span><span class="kpi-val" id="kpi-lucro">R$ 0</span></div>
+  </div>
+</header>
+
+<div class="tabs-bar">
+  <button class="tab fat active" onclick="setTab('fat')"><span class="tab-dot"></span>FATURAMENTO</button>
+  <button class="tab desp" onclick="setTab('desp')"><span class="tab-dot"></span>DESPESAS</button>
+  <button class="tab lucro" onclick="setTab('lucro')"><span class="tab-dot"></span>LUCRO TOTAL</button>
+</div>
+
+<div class="main">
+  <!-- FATURAMENTO -->
+  <div class="tab-panel active" id="panel-fat">
+    <div class="boards-wrap" id="boards-fat">
+      <div class="add-neg-wrap"><button class="add-neg-btn" onclick="openNewBusiness('fat')">＋ Novo<br>Negócio</button></div>
+    </div>
+  </div>
+  <!-- DESPESAS -->
+  <div class="tab-panel" id="panel-desp">
+    <div class="boards-wrap" id="boards-desp">
+      <div class="add-neg-wrap"><button class="add-neg-btn" onclick="openNewBusiness('desp')">＋ Novo<br>Negócio</button></div>
+    </div>
+  </div>
+  <!-- LUCRO -->
+  <div class="tab-panel" id="panel-lucro">
+    <div class="lucro-hero">
+      <div>
+        <div class="lucro-hero-label">Lucro Total 2026</div>
+        <div class="lucro-hero-val" id="lucro-hero-val">R$ 0</div>
+        <div class="lucro-hero-sub">Faturamento − Despesas de todos os negócios</div>
+      </div>
+      <div style="display:flex;gap:20px;flex-wrap:wrap">
+        <div style="text-align:center">
+          <div style="font-size:11px;color:var(--text2);letter-spacing:1px;margin-bottom:4px">FATURAMENTO</div>
+          <div style="font-size:20px;font-weight:800;color:var(--neon)" id="lucro-fat-val">R$ 0</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-size:11px;color:var(--text2);letter-spacing:1px;margin-bottom:4px">DESPESAS</div>
+          <div style="font-size:20px;font-weight:800;color:var(--neon5)" id="lucro-desp-val">R$ 0</div>
+        </div>
+      </div>
+    </div>
+    <div class="lucro-grid" id="lucro-grid"></div>
+  </div>
+</div>
+
+<!-- Modal novo negócio -->
+<div class="modal-overlay" id="modal-neg">
+  <div class="modal">
+    <div class="modal-title" id="modal-neg-title">Novo Negócio</div>
+    <label class="form-label">Nome</label>
+    <input class="form-input" id="neg-nome" placeholder="Ex: AiqFome, Pizza Prime...">
+    <label class="form-label">Cor</label>
+    <div class="color-picks" id="color-picks"></div>
+    <div class="modal-actions">
+      <button class="btn btn-suc" style="flex:1;justify-content:center" onclick="createBusiness()">✦ Criar</button>
+      <button class="btn btn-cancel" onclick="closeModal('modal-neg')">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const COLORS=[
+  {n:'Ciano',h:'#00f5ff',bg:'rgba(0,245,255,0.12)',br:'rgba(0,245,255,0.35)',gl:'rgba(0,245,255,0.15)'},
+  {n:'Verde',h:'#00ff88',bg:'rgba(0,255,136,0.12)',br:'rgba(0,255,136,0.35)',gl:'rgba(0,255,136,0.15)'},
+  {n:'Roxo',h:'#bf00ff',bg:'rgba(191,0,255,0.12)',br:'rgba(191,0,255,0.35)',gl:'rgba(191,0,255,0.15)'},
+  {n:'Laranja',h:'#ff6b35',bg:'rgba(255,107,53,0.12)',br:'rgba(255,107,53,0.35)',gl:'rgba(255,107,53,0.15)'},
+  {n:'Rosa',h:'#ff2d9b',bg:'rgba(255,45,155,0.12)',br:'rgba(255,45,155,0.35)',gl:'rgba(255,45,155,0.15)'},
+  {n:'Amarelo',h:'#ffe94d',bg:'rgba(255,233,77,0.12)',br:'rgba(255,233,77,0.35)',gl:'rgba(255,233,77,0.15)'},
+  {n:'Vermelho',h:'#ff3b3b',bg:'rgba(255,59,59,0.12)',br:'rgba(255,59,59,0.35)',gl:'rgba(255,59,59,0.15)'},
+  {n:'Azul',h:'#4488ff',bg:'rgba(68,136,255,0.12)',br:'rgba(68,136,255,0.35)',gl:'rgba(68,136,255,0.15)'},
+  {n:'Branco',h:'#ccddff',bg:'rgba(200,220,255,0.08)',br:'rgba(200,220,255,0.25)',gl:'rgba(200,220,255,0.1)'},
+];
+
+let data=JSON.parse(localStorage.getItem('fin2026_v3')||'null');
+if(!data){
+  const gid=()=>Date.now()+'_'+Math.random().toString(36).slice(2,6);
+  const mkb=(n,ci,entries)=>({id:gid(),name:n,colorIdx:ci,entries:entries.map(([l,v])=>({id:gid(),label:l,val:v}))});
+  data={
+    fat:[
+      mkb('AiqFome',2,[['janeiro',3003],['fevereiro',6395],['Março',3238]]),
+      mkb('DIRETO DA FONTE',3,[['zoom',500],['zoom',800],['MG',2805],['zoom',640],['4745',4745],['zoom',515],['zoom',500],['mg',561],['zoom',800],['zoom',100],['Neco',1600],['zoom',390],['mg',1014],['março',5480],['hora extra',1500],['zoom',619]]),
+      mkb('SAFRA 2025-2026',1,[['lori',1100],['gerson',3000]]),
+      mkb('PIZZA PRIME',6,[['jan - off',0],['Fev - off',0],['nov, dez, jan',663]]),
+      mkb('GAMEFLIX',8,[['janeiro - off',0],['Fevereiro - off',0]]),
+      mkb('MANSAO',4,[['Chico',216],['zoom',360],['zoom',162],['Chico 18',324],['zoom',750],['Chico 18',324],['zoom 15',537],['mg 14',84],['março',2181],['igor',60],['chico',90]]),
+      mkb('BRIKE ON',5,[['Janeiro - off',0],['Fevereiro',0]]),
+      mkb('OUTROS',0,[['delfio pc',400],['vo',200],['pag. Germano',115],['Marciano',250],['PG germano',3885],['vó aniversário',100],['Delfio Pc',400],['Aux',1200],['Delfio Pc',400],['vo',200],['venda Xbox p1',300],['delfio',400],['vó',200]]),
+    ],
+    desp:[
+      mkb('AiqFome',2,[]),
+      mkb('DIRETO DA FONTE',3,[['5 CAIXA RED',3065],['DESP, GER, UY',500],['3565',3565],['10 cx FERNET',3892],['DESP, GER, UY',500],['SHPP Jack maçã',745],['SHPP Jack maçã',687],['yan uy',3315]]),
+      mkb('SAFRA 2025-2026',1,[]),
+      mkb('PIZZA PRIME',6,[]),
+      mkb('GAMEFLIX',8,[]),
+      mkb('MANSAO',4,[['investimento',2754]]),
+      mkb('BRIKE ON',5,[['moto',2100],['multas',2340],['manutncao',250],['gol',4600],['moto aba',217],['gol oleo e furo',90],['pog, Diogo',500],['rabeta factor',129]]),
+      mkb('OUTROS',0,[]),
+    ]
+  };
+  save();
+}
+
+let modalCtx='fat';
+let selColor=0;
+
+function save(){localStorage.setItem('fin2026_v3',JSON.stringify(data))}
+function gid(){return Date.now()+'_'+Math.random().toString(36).slice(2,6)}
+function fmtR(v){const n=parseFloat(v)||0;return 'R$ '+n.toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:2})}
+function fmtN(v){return (parseFloat(v)||0).toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:2})}
+function sum(b){return b.entries.reduce((a,e)=>a+(parseFloat(e.val)||0),0)}
+function sumAll(arr){return arr.reduce((a,b)=>a+sum(b),0)}
+
+function updateKPIs(){
+  const fat=sumAll(data.fat);
+  const desp=sumAll(data.desp);
+  const lucro=fat-desp;
+  document.getElementById('kpi-fat').textContent=fmtR(fat);
+  document.getElementById('kpi-desp').textContent=fmtR(desp);
+  const lel=document.getElementById('kpi-lucro');
+  lel.textContent=fmtR(lucro);
+  lel.style.color=lucro>=0?'var(--neon3)':'var(--neon5)';
+}
+
+function setTab(t){
+  document.querySelectorAll('.tab').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(el=>el.classList.remove('active'));
+  document.querySelector('.tab.'+t).classList.add('active');
+  document.getElementById('panel-'+t).classList.add('active');
+  if(t==='lucro') renderLucro();
+}
+
+function renderBoards(ctx){
+  const arr=data[ctx];
+  const wrap=document.getElementById('boards-'+ctx);
+  const addBtn=wrap.lastElementChild;
+  while(wrap.children.length>1) wrap.removeChild(wrap.firstElementChild);
+  const isDesp=ctx==='desp';
+
+  arr.forEach((b,bi)=>{
+    const c=COLORS[b.colorIdx]||COLORS[0];
+    const total=sum(b);
+    const div=document.createElement('div');
+    div.className='board';
+    div.style.setProperty('--board-bg',c.bg);
+    div.style.setProperty('--board-border-color',c.br);
+    div.style.setProperty('--board-color',c.h);
+    div.style.setProperty('--board-glow',c.gl);
+    div.style.setProperty('--board-border',c.gl);
+
+    const entriesHtml=b.entries.map((e,ei)=>`
+      <div class="entry">
+        <span class="entry-label" onclick="editEntry('${ctx}',${bi},${ei})" title="Clique para editar">${e.label||'—'}</span>
+        <span class="entry-val ${isDesp?'desp-val':'fat-val'}">R$ ${fmtN(e.val)}</span>
+        <button class="entry-del" onclick="delEntry('${ctx}',${bi},${ei})">✕</button>
+      </div>`).join('');
+
+    div.innerHTML=`
+      <div class="board-header">
+        <button class="board-name" onclick="renameBoard('${ctx}',${bi})" style="color:${c.h};font-family:inherit">${b.name}</button>
+        <span class="board-total">${fmtN(total)}</span>
+        <button class="entry-del" onclick="delBoard('${ctx}',${bi})" title="Excluir" style="font-size:15px;margin-left:3px">✕</button>
+      </div>
+      <div class="board-subtotal">
+        <span style="font-size:10px;letter-spacing:1px">${isDesp?'DESPESA TOTAL':'VALOR TOTAL'}</span>
+        <span>${fmtR(total)}</span>
+      </div>
+      <div class="entries">${entriesHtml}</div>
+      <div class="add-entry">
+        <input class="add-input" id="${ctx}-lbl-${bi}" placeholder="Descrição..." onkeydown="if(event.key==='Enter')addEntry('${ctx}',${bi})">
+        <input class="add-val-input" id="${ctx}-val-${bi}" type="number" placeholder="R$" onkeydown="if(event.key==='Enter')addEntry('${ctx}',${bi})">
+        <button class="add-btn" onclick="addEntry('${ctx}',${bi})">＋</button>
+      </div>`;
+    wrap.insertBefore(div,addBtn);
+  });
+  updateKPIs();
+}
+
+function addEntry(ctx,bi){
+  const l=document.getElementById(ctx+'-lbl-'+bi).value.trim();
+  const v=parseFloat(document.getElementById(ctx+'-val-'+bi).value)||0;
+  if(!l&&!v) return;
+  data[ctx][bi].entries.push({id:gid(),label:l||'Entrada',val:v});
+  document.getElementById(ctx+'-lbl-'+bi).value='';
+  document.getElementById(ctx+'-val-'+bi).value='';
+  save();renderBoards(ctx);renderLucroIfVisible();
+}
+
+function delEntry(ctx,bi,ei){
+  data[ctx][bi].entries.splice(ei,1);
+  save();renderBoards(ctx);renderLucroIfVisible();
+}
+
+function editEntry(ctx,bi,ei){
+  const e=data[ctx][bi].entries[ei];
+  const nl=prompt('Descrição:',e.label);if(nl===null)return;
+  const nv=prompt('Valor (R$):',e.val);if(nv===null)return;
+  data[ctx][bi].entries[ei]={...e,label:nl,val:parseFloat(nv)||0};
+  save();renderBoards(ctx);renderLucroIfVisible();
+}
+
+function renameBoard(ctx,bi){
+  const b=data[ctx][bi];
+  const c=COLORS[b.colorIdx]||COLORS[0];
+  const boards=document.querySelectorAll('#boards-'+ctx+' .board');
+  const nameEl=boards[bi]?.querySelector('.board-name');
+  if(!nameEl)return;
+  const inp=document.createElement('input');
+  inp.className='board-name-input';inp.value=b.name;inp.style.color=c.h;inp.style.borderColor=c.br;
+  nameEl.replaceWith(inp);inp.focus();inp.select();
+  const done=()=>{b.name=inp.value.trim()||b.name;save();renderBoards(ctx)};
+  inp.onblur=done;inp.onkeydown=ev=>{if(ev.key==='Enter')inp.blur();if(ev.key==='Escape'){inp.value=b.name;inp.blur()}};
+}
+
+function delBoard(ctx,bi){
+  if(!confirm('Excluir "'+data[ctx][bi].name+'"?'))return;
+  data[ctx].splice(bi,1);save();renderBoards(ctx);renderLucroIfVisible();
+}
+
+function openNewBusiness(ctx){
+  modalCtx=ctx;selColor=0;
+  document.getElementById('neg-nome').value='';
+  document.getElementById('modal-neg-title').textContent='Novo Negócio — '+(ctx==='fat'?'Faturamento':'Despesas');
+  renderColorPicks();
+  document.getElementById('modal-neg').classList.add('open');
+  setTimeout(()=>document.getElementById('neg-nome').focus(),300);
+}
+
+function renderColorPicks(){
+  const w=document.getElementById('color-picks');w.innerHTML='';
+  COLORS.forEach((c,i)=>{
+    const d=document.createElement('div');
+    d.className='cpick'+(i===selColor?' sel':'');
+    d.style.background=c.h;d.onclick=()=>{selColor=i;renderColorPicks()};d.title=c.n;
+    w.appendChild(d);
+  });
+}
+
+function createBusiness(){
+  const nome=document.getElementById('neg-nome').value.trim();if(!nome)return;
+  data[modalCtx].push({id:gid(),name:nome,colorIdx:selColor,entries:[]});
+  save();closeModal('modal-neg');renderBoards(modalCtx);
+}
+
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+
+function renderLucroIfVisible(){
+  if(document.getElementById('panel-lucro').classList.contains('active')) renderLucro();
+}
+
+function renderLucro(){
+  const fatTotal=sumAll(data.fat);
+  const despTotal=sumAll(data.desp);
+  const lucroTotal=fatTotal-despTotal;
+  document.getElementById('lucro-hero-val').textContent=fmtR(lucroTotal);
+  document.getElementById('lucro-hero-val').style.background=lucroTotal>=0?'linear-gradient(90deg,var(--neon3),var(--neon))':'linear-gradient(90deg,var(--neon5),#ff8888)';
+  document.getElementById('lucro-fat-val').textContent=fmtR(fatTotal);
+  document.getElementById('lucro-desp-val').textContent=fmtR(despTotal);
+
+  const allNames=[...new Set([...data.fat.map(b=>b.name),...data.desp.map(b=>b.name)])];
+  const grid=document.getElementById('lucro-grid');
+  grid.innerHTML='';
+
+  allNames.forEach(name=>{
+    const fb=data.fat.find(b=>b.name===name);
+    const db=data.desp.find(b=>b.name===name);
+    const fat=fb?sum(fb):0;
+    const desp=db?sum(db):0;
+    const lucro=fat-desp;
+    const ci=(fb||db)?.colorIdx||0;
+    const c=COLORS[ci]||COLORS[0];
+    const pos=lucro>=0;
+
+    const card=document.createElement('div');
+    card.className='lucro-card';
+    card.style.setProperty('--board-bg',c.bg);
+    card.innerHTML=`
+      <div class="lucro-card-header" style="background:${c.bg};border-bottom:1px solid ${c.br}">
+        <span class="lucro-card-name" style="color:${c.h}">${name}</span>
+        <span style="font-size:11px;font-weight:700;color:${pos?'var(--neon3)':'var(--neon5)'}">${pos?'▲':'▼'} ${fmtR(Math.abs(lucro))}</span>
+      </div>
+      <div class="lucro-card-body">
+        <div class="lucro-row"><span class="lucro-row-label">Faturamento</span><span class="lucro-row-val fat-val">${fmtR(fat)}</span></div>
+        <div class="lucro-row"><span class="lucro-row-label">Despesas</span><span class="lucro-row-val desp-val">− ${fmtR(desp)}</span></div>
+        <div class="lucro-divider"></div>
+        <div class="lucro-result">
+          <span style="color:var(--text2);font-size:12px">LUCRO</span>
+          <span style="color:${pos?'var(--neon3)':'var(--neon5)'};font-size:16px">${fmtR(lucro)}</span>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function createParticles(){
+  const cont=document.getElementById('particles');
+  for(let i=0;i<16;i++){
+    const d=document.createElement('div');d.className='particle';
+    const cols=['rgba(0,245,255,0.6)','rgba(191,0,255,0.5)','rgba(0,255,136,0.5)'];
+    d.style.cssText=`left:${Math.random()*100}%;background:${cols[Math.floor(Math.random()*cols.length)]};animation-duration:${8+Math.random()*12}s;animation-delay:-${Math.random()*20}s;--dx:${(Math.random()-0.5)*4};box-shadow:0 0 6px currentColor;`;
+    cont.appendChild(d);
+  }
+}
+
+createParticles();
+renderBoards('fat');
+renderBoards('desp');
+updateKPIs();
+</script>
+</html>
