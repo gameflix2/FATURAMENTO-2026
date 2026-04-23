@@ -11,7 +11,7 @@
 <style>
     :root {
         --netflix-red: #E50914;
-        --netflix-red-hover: #f40612;
+        --netflix-red-hover: #3ef406;
         --netflix-black: #141414;
         --netflix-dark: #000000;
         --netflix-gray: #181818;
@@ -25,11 +25,11 @@
     }
 
     body {
-        font-family: 'Inter', sans-serif;
-        background: var(--netflix-black);
-        color: var(--netflix-text);
-        overflow-x: hidden;
-    }
+    font-family: 'Inter', sans-serif;
+    background: #000000;  /* troca o var(--netflix-black) por #000000 direto */
+    color: var(--netflix-text);
+    overflow-x: hidden;
+}
 
     h1, h2, h3,.font-gamer {
         font-family: 'Bebas Neue', sans-serif;
@@ -44,7 +44,7 @@
     }
 
    .gradient-border {
-        background: #181818;
+        background: #000000;
         border: 1px solid #2F2F2F;
     }
 
@@ -53,7 +53,7 @@
     }
 
    .glass {
-        background: #181818;
+      background: #000000;
         border: 1px solid #2F2F2F;
     }
 
@@ -161,7 +161,7 @@
     }
 
    .netflix-card {
-        background: #181818;
+        background: #000000;
         border-radius: 4px;
         overflow: hidden;
         transition: all 0.3s ease;
@@ -296,9 +296,7 @@
 
 <!-- Hero Section -->
 <section class="relative min-h-screen flex items-center justify-center pt-20 grid-bg">
-    <div class="absolute inset-0 bg-gradient-to-b from-[#E50914]/10 via-transparent to-[#E50914]/10"></div>
-    <div class="absolute top-20 left-10 w-72 h-72 bg-[#E50914]/20 rounded-full blur-[120px] animate-pulse"></div>
-    <div class="absolute bottom-20 right-10 w-96 h-96 bg-[#E50914]/20 rounded-full blur-[120px] animate-pulse"></div>
+
 
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
         <div class="inline-block mb-6 px-4 py-2 rounded-full glass border border-[#E50914]/30 fade-in">
