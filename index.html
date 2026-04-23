@@ -3,7 +3,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gameflix - Jogos Originais com até 90% OFF</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -249,15 +249,6 @@
         background: linear-gradient(to right, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
         background-size: 1000px 100%;
     }
-    body {
-    font-family: 'Inter', sans-serif;
-    background: #000000;
-    color: var(--netflix-text);
-    /* ADICIONE AS LINHAS ABAIXO */
-    min-width: 1280px !important;
-    width: 1280px !important;
-    overflow-x: auto !important;
-}
 </style>
 </head>
 <body class="antialiased">
@@ -314,7 +305,7 @@
 
         <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight fade-in">
             PARE DE PAGAR<br>
-            <span class="gradient-text">R$299 EM JOGOS NA STEAM!</span>
+            <span class="gradient-text">R$299 EM JOGOS NA STEAM</span>
         </h1>
 
         
@@ -323,15 +314,16 @@
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12 fade-in">
                 <div class="gradient-border rounded-2xl p-1 mb-8 fade-in">
-            <div class="bg-black rounded-2xl aspect-video flex items-center justify-center relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-br from-[#E50914]/10 to-[#E50914]/10"></div>
-                <button class="relative z-10 w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-r from-[#E50914] to-[#f40612] flex items-center justify-center animate-pulse-glow hover:scale-110 transition-transform">
-                    <i class="fas fa-play text-3xl sm:text-4xl text-black ml-1"></i>
-                </button>
-                <div class="absolute bottom-4 left-4 glass px-4 py-2 rounded-lg">
-                    <span class="text-sm font-bold"><i class="fas fa-video mr-2 text-[#E50914]"></i></span>
-                </div>
-            </div>
+           <div class="bg-black rounded-2xl aspect-video flex items-center justify-center relative overflow-hidden">
+    <iframe 
+        class="w-full h-full" 
+        src="https://www.youtube.com/embed/k8aXqeQs9bE" 
+        title="Gameflix Video" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+        allowfullscreen>
+    </iframe>
+</div>
         </div>
     </div>
 
@@ -395,7 +387,7 @@
                             <div class="flex items-center justify-between">
                                 <div>
                                     <p class="text-sm text-gray-400">Estoque acabando:</p>
-                                    <p class="font-black text-red-400"><i class="fas fa-exclamation-triangle mr-2"></i>ÚLTIMAS 7 CHAVES</p>
+                                    <p class="font-black text-red-400"><i class="fas fa-exclamation-triangle mr-2"></i>TEMPO LIMITADO</p>
                                 </div>
                                 <div class="text-right">
                                     <p class="text-xs text-gray-400">Economize</p>
@@ -405,7 +397,7 @@
                         </div>
 
                         <button class="btn-neon w-full py-4 rounded-xl text-lg font-black mb-3">
-                            <i class="fas fa-shopping-cart mr-2"></i>COMPRAR AGORA - ÚLTIMAS 7 CHAVES
+                            <i class="fas fa-shopping-cart mr-2"></i>COMPRAR AGORA
                         </button>
 
                         <div class="flex items-center justify-center gap-4 text-xs text-gray-400">
